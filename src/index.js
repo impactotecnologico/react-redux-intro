@@ -1,12 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import store from "./store";
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+const addExpense = val => store.dispatch({ type: "ADD_EXPENSE", payload: val });
+
+// Creamos la función render()
+const render = () => {
+  // Obtenemos el state de nuestra store con la función getState()
+  const state = store.getState();
+  // Inyectamos el state a nuestro componente App.js
+  ReactDOM.render(
+    <App {...state} addExpense={addExpense} />,
+    document.getElementById("root")
+  );
+};
+
+store.subscribe(render);
+
+render();
+
 serviceWorker.unregister();
